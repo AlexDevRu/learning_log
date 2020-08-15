@@ -1,0 +1,30 @@
+{% extends "learning_logs/base.html" %}
+
+{% block page_header %}
+
+    <div class="d-flex justify-content-between align-content-center">
+        <h1>Topics</h1>
+        <h3><a href="{% url 'learning_logs:new_topic' %}"
+           class="btn btn-success">Add new topic</a></h3>
+    </div>
+{% endblock page_header %}
+
+{% block content %}
+    <div class="d-flex flex-wrap justify-content-around pt-4">
+        {% for topic in topics %}
+            <a href="{% url 'learning_logs:topic' topic.id %}">
+                <div class="card mb-4">
+                    <img class="card-img-top img-fluid"
+                         src="{{ topic.image.url }}" alt="{{ topic }}">
+                    <div class="card-body">
+                        <h3 class="text-center">{{ topic }}</h3>
+                    </div>
+                </div>
+            </a>
+        {% empty %}
+            <h3 class="text-center">No topics have been added yet.</h3>
+        {% endfor %}
+    </div>
+
+
+{% endblock content %}
