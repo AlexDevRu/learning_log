@@ -19,6 +19,10 @@
                     <div class="card-body">
                         <h3 class="text-center">{{ topic }}</h3>
                     </div>
+                    <a href="{% url 'learning_logs:edit_topic' topic.id %}"
+                       class="btn btn-warning btn-edit"><i class="fa fa-pencil-square-o"></i></a>
+                    <a href="{% url 'learning_logs:delete_topic' topic.id %}"
+                       class="btn btn-danger btn-delete"><i class="fa fa-trash"></i></a>
                 </div>
             </a>
         {% empty %}

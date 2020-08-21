@@ -1,0 +1,24 @@
+{% extends 'learning_logs/base.html' %}
+
+{% block page_header %}
+    <div class="d-flex justify-content-between align-content-center">
+        <h3>{{ entry.topic }}</h3>
+        <h3>
+            <a href="{% url 'learning_logs:edit_entry' entry.id %}"
+                           class="btn btn-warning">edit entry</a>
+        </h3>
+    </div>
+{% endblock page_header %}
+
+
+{% block content %}
+
+        <!--<img src="{{ entry.image.url }}" class="float-left mb-4 mw-100">
+        <div class="float-left">
+            {{ entry.text|linebreaks }}
+        </div>-->
+        <p>
+            <img src="{{ entry.image.url }}" width="300" class="float-left mr-4 mb-4 col-md-4">
+            {{ entry.text|linebreaks }}
+        </p>
+{% endblock content %}

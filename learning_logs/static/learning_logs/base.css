@@ -1,3 +1,15 @@
 .card {
     max-width: 400px;
 }
+
+.btn-delete{
+    position: absolute;
+    top: 10;
+    right: 10;
+}
+
+.btn-edit {
+    position: absolute;
+    top: 10;
+    right: 60;
+}

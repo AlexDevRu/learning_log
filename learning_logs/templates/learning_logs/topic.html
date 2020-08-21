@@ -17,15 +17,21 @@
             <div class="card mb-3">
                 <div class="card-header d-flex justify-content-between align-content-center">
                     <h4>{{ entry.date_added|date:'M d, Y H:i' }}</h4>
-                    <small>
+
+                    <div>
                         <a href="{% url 'learning_logs:edit_entry' entry.id %}"
-                           class="btn btn-warning">edit entry</a>
-                    </small>
+                           class="btn btn-warning"><i class="fa fa-pencil-square-o"></i></a>
+
+                        <a href="{% url 'learning_logs:delete_entry' entry.id %}"
+                           class="btn btn-danger"><i class="fa fa-trash"></i></a>
+                    </div>
                 </div>
                 <img src="{{ entry.image.url }}" class="img-fluid">
                 <div class="card-body">
-                    {{ entry.text|linebreaks }}
+                    {{ entry|linebreaks }}
                 </div>
+                <a href="{% url 'learning_logs:read_entry' entry.id %}"
+                           class="btn btn-success mx-4 mb-4">read</a>
             </div>
         {% empty %}
             <p>There are no entries for this topic yet.</p>
