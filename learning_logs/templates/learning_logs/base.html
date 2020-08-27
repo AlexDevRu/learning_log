@@ -8,9 +8,14 @@
     <title>Learning Log</title>
     {% bootstrap_css %}
     {% bootstrap_javascript jquery='full' %}
-    <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/css/base.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'learning_logs/css/jquery.fancybox.min.css' %}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-light bg-light mb-4 border">
@@ -23,7 +28,7 @@
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'learning_logs:topics'%}">Topics</a>
+                    <a class="nav-link" href="{% url 'learning_logs:topics' %}">Topics</a>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto">
@@ -47,12 +52,19 @@
     </nav>
 
     <main role="main" class="container">
-        <div class="pb-2 mb-2 border-bottom">
+        <div class="pb-2 pt-2 mb-2 border-bottom">
             {% block page_header %}{% endblock page_header %}
         </div>
         <div>
             {% block content %}{% endblock content %}
         </div>
     </main>
+
+    <script src="{% static 'learning_logs/js/search.js' %}"></script>
+    <script src="{% static 'learning_logs/js/jquery.fancybox.min.js' %}"></script>
+    <script src="{% static 'learning_logs/js/fancybox.js' %}"></script>
+
+    {% block script %}{% endblock script %}
+
 </body>
 </html>

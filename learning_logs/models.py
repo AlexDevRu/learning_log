@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.shortcuts import reverse
 
 # Create your models here.
 
@@ -14,6 +15,9 @@ class Topic(models.Model):
     def __str__(self):
         """Возвращает строковое представление модели."""
         return self.text
+
+    def get_delete_url(self):
+        return reverse('learning_logs:delete_topic', kwargs={'topic_id': self.id})
 
 
 class Entry(models.Model):

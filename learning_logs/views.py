@@ -1,5 +1,8 @@
-from django.shortcuts import render, redirect
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.views.generic import ListView
 from .models import Topic, Entry
 from .forms import TopicForm, EntryForm
 from django.http import Http404
@@ -13,12 +16,12 @@ def index(request):
     return render(request, 'learning_logs/index.html')
 
 
-@login_required
-def topics(request):
-    """Выводит список тем."""
-    topics = Topic.objects.filter(owner=request.user).order_by('date_added')
-    context = {'topics': topics}
-    return render(request, 'learning_logs/topics.html', context)
+class Topics(LoginRequiredMixin, ListView):
+    template_name = 'learning_logs/topics.html'
+    context_object_name = 'topics'
+
+    def get_queryset(self):
+        return Topic.objects.filter(owner=self.request.user).order_by('date_added')
 
 
 @login_required
@@ -110,7 +113,7 @@ def delete_entry(request, entry_id):
     entry = Entry.objects.get(id=entry_id)
     check_topic_owner(request, entry.topic)
     entry.delete()
-    return redirect('learning_logs:topic')
+    return redirect('learning_logs:topic', topic_id=entry.topic.id)
 
 
 @login_required
@@ -138,3 +141,51 @@ def edit_topic(request, topic_id):
             return redirect('learning_logs:topics')
     context = {'topic': topic, 'form': form}
     return render(request, 'learning_logs/edit_topic.html', context)
+
+
+class Search(LoginRequiredMixin, ListView):
+
+    def get_queryset(self):
+        if self.request.GET.get('obj') == 'topic':
+            self.template_name = 'learning_logs/topics.html'
+            self.context_object_name = 'topics'
+            return Topic.objects.filter(Q(text__icontains=self.request.GET.get("q")) & Q(owner=self.request.user))
+        elif self.request.GET.get('obj') == 'entry':
+            self.template_name = 'learning_logs/topic.html'
+            self.context_object_name = 'entries'
+            return Entry.objects.filter(Q(text__icontains=self.request.GET.get("q")) &
+                                        Q(topic__id=self.request.GET.get("topic_id")))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = self.request.GET.get("q")
+        if self.request.GET.get('obj') == 'entry':
+            context["topic"] = get_object_or_404(Topic, pk=self.request.GET.get("topic_id"))
+        return context
+
+
+class SearchTopics(LoginRequiredMixin, ListView):
+    template_name = 'learning_logs/topics.html'
+    context_object_name = 'topics'
+
+    def get_queryset(self):
+        return Topic.objects.filter(Q(text__icontains=self.request.GET.get("q")) & Q(owner=self.request.user))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = self.request.GET.get("q")
+        return context
+
+
+class SearchEntries(LoginRequiredMixin, ListView):
+    template_name = 'learning_logs/topic.html'
+    context_object_name = 'entries'
+
+    def get_queryset(self):
+        return Entry.objects.filter(Q(text__icontains=self.request.GET.get("q")) &
+                                    Q(topic__id=self.request.GET.get("topic_id")))
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context["q"] = self.request.GET.get("q")
+        return context

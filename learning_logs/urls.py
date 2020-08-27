@@ -11,7 +11,7 @@ urlpatterns = [
     # Домашняя страница
     path('', views.index, name='index'),
     # Страница со списком всех тем.
-    path('topics/', views.topics, name='topics'),
+    path('topics/', views.Topics.as_view(), name='topics'),
     # Страница с подробной информацией по отдельной теме
     path('topics/<int:topic_id>/', views.topic, name='topic'),
     # Страница для добавления новой темы
@@ -28,6 +28,9 @@ urlpatterns = [
     path('edit_topic/<int:topic_id>/', views.edit_topic, name='edit_topic'),
     # Страница для удаления темы
     path('delete_topic/<int:topic_id>/', views.delete_topic, name='delete_topic'),
+    # Страница для поиска темы по названию
+    path('search_entries/', views.SearchEntries.as_view(), name='search_entries'),
+    path('search_topics/', views.SearchTopics.as_view(), name='search_topics'),
 ]
 
 

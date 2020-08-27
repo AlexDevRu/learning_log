@@ -1,19 +1,25 @@
 {% extends "learning_logs/base.html" %}
+{% load static %}
 
 {% block page_header %}
-
-    <div class="d-flex justify-content-between align-content-center">
+    <div class="d-flex justify-content-between align-items-center flex-wrap">
         <h1>Topics</h1>
-        <h3><a href="{% url 'learning_logs:new_topic' %}"
-           class="btn btn-success">Add new topic</a></h3>
+        <div id="search">
+            <form action="{% url 'learning_logs:search_topics' %}">
+                <input type="text" name="q" placeholder="Search topic..." class="form-control"
+                value="{% if q %}{{ q }}{% endif %}">
+            </form>
+        </div>
+        <a href="{% url 'learning_logs:new_topic' %}"
+           class="btn btn-success">Add new topic</a>
     </div>
 {% endblock page_header %}
 
 {% block content %}
-    <div class="d-flex flex-wrap justify-content-around pt-4">
+    <div class="d-flex flex-wrap justify-content-center pt-4">
         {% for topic in topics %}
             <a href="{% url 'learning_logs:topic' topic.id %}">
-                <div class="card mb-4">
+                <div class="card m-4">
                     <img class="card-img-top img-fluid"
                          src="{{ topic.image.url }}" alt="{{ topic }}">
                     <div class="card-body">
@@ -21,7 +27,10 @@
                     </div>
                     <a href="{% url 'learning_logs:edit_topic' topic.id %}"
                        class="btn btn-warning btn-edit"><i class="fa fa-pencil-square-o"></i></a>
-                    <a href="{% url 'learning_logs:delete_topic' topic.id %}"
+                    <a href="javascript:;" data-deletelink
+                       data-topic_id="{{ topic.id }}"
+                       data-topic_text="{{ topic.text }}"
+                       data-src="#delete_message_window"
                        class="btn btn-danger btn-delete"><i class="fa fa-trash"></i></a>
                 </div>
             </a>
@@ -30,5 +39,17 @@
         {% endfor %}
     </div>
 
+    <div style="display: none;" id="delete_message_window">
+        <h4 class="text-center mb-4">Вы действительно хотите удалить тему "<span id="topic_title"></span>"?</h4>
+        <div class="d-flex justify-content-center">
+            <a id="topic_btn" type="submit" class="btn btn-danger mr-3">Да</a>
+            <button id="close_delete_message" class="btn btn-success">Нет</button>
+        </div>
+    </div>
 
 {% endblock content %}
+
+
+{% block script %}
+    <script src="{% static 'learning_logs/js/search.js' %}"></script>
+{% endblock script %}
