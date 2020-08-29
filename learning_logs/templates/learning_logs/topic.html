@@ -26,7 +26,11 @@
                         <a href="{% url 'learning_logs:edit_entry' entry.id %}"
                            class="btn btn-warning"><i class="fa fa-pencil-square-o"></i></a>
 
-                        <a href="{% url 'learning_logs:delete_entry' entry.id %}"
+                        <a href="javascript:;" data-deletelink
+                           data-id="{{ entry.id }}"
+                           data-text="пост {{ entry.text }}"
+                           data-url="{% url 'learning_logs:delete_entry' entry.id  %}"
+                           data-src="#delete_message_window"
                            class="btn btn-danger"><i class="fa fa-trash"></i></a>
                     </div>
                 </div>
@@ -41,4 +45,7 @@
             <p>There are no entries for this topic yet.</p>
         {% endfor %}
     </div>
+
+    {% include "learning_logs/delete_message_window.html" %}
+
 {% endblock content %}

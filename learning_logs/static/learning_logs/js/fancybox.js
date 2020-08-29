@@ -6,10 +6,11 @@ $('#close_delete_message').click(
 
 $("[data-deletelink]").fancybox({
     beforeLoad: function(instance, slide) {
-    	var topic_id = slide.opts.$orig.data('topic_id');
-    	var topic_text = slide.opts.$orig.data('topic_text');
-        $('#topic_title').text(topic_text);
-        console.log("/delete_topic/" + topic_id + "/");
-        $('#topic_btn').attr({ 'href': "/delete_topic/" + topic_id + "/" });
+    	var id = slide.opts.$orig.data('id');
+    	var text = slide.opts.$orig.data('text');
+    	var url = slide.opts.$orig.data('url');
+        $('#title').text(text);
+        console.log(url);
+        $('#submit_btn').attr({ 'href': url });
     }
 });
